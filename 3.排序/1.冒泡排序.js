@@ -27,6 +27,7 @@ function exchenge(arr,a,b) {
 
 
 function sort(arr) {
+  // 循环的圈数
   for(let i = 0; i < arr.length; i++ ){
     // 每一圈比较会找到一个最大的值放在最后,每次比较的圈数会多1
     for(let j = 0; j < arr.length - 1 - i; j++ ) {
