@@ -8,6 +8,7 @@ let str = 'aaabbbbccdddddrrrrrr';
  */
 
 function maxlong(str) {
+  if(str.length === 0) return 0;
   // 定义两个变量代表两个指针(索引)
   // 定义一个最大值
   let i = 0,j=0,max=1;
