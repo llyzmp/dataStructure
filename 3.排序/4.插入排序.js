@@ -22,3 +22,4 @@ function insertSort(arr) {
 
 ;
 console.log(insertSort(arr))
+console.log(arr)
