@@ -113,11 +113,11 @@ class LinkedList {
   getHead() {
     return this.head
   }
-  getSize() {
+  size() {
     return this.count
   }
   isEmpty() {
-    return this.count === 0
+    return this.size() === 0
   }
 }
 
