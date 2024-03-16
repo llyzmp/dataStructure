@@ -121,4 +121,80 @@ class LinkedList {
   }
 }
 
-let link = new LinkedList()
+
+// 在单链表基础上封装循环链表
+class CircularLinkedList extends LinkedList {
+  constructor() {
+    super()
+  }
+  // 链表尾部插入
+  push(element) {
+    let node = new Node(element)
+    if (this.head === null) {
+      this.head = node
+      // 循环链表首尾相连
+      node.next = this.head
+    } else {
+      // 先找到链尾，
+      const tailNode = this.findEleByIndex(this.size() - 1)
+      tailNode.next = node
+      node.next = this.head
+    }
+    this.count++
+  }
+  // 根据索引指定位置插入
+  insert(element, index) {
+    // 限制索引范围，同时链表可能为空
+    if (index >=0 && index <= this.count) {
+      let node = new Node(element)
+      // 链表头部插入
+      if(index === 0) {
+        // 链表为空时
+        if (this.head === null) {
+          this.head = node
+          node.next = this.head
+        } else {
+          // 链表不为空时
+          node.next = this.head
+          // 获取尾部节点，指向头部节点
+          let tailNode = this.findEleByIndex(this.size() - 1)
+          tailNode.next = node
+          this.head = node
+        }
+      } else if (index === this.count) {
+        let tailNode = this.findEleByIndex(this.size() - 1)
+        tailNode.next = node
+        node.next = this.head
+      } else {
+        // 中间插入
+        let pre = this.findEleByIndex(index - 1)
+        let current = pre.next
+        pre.next = node
+        node.next = current
+      }
+      this.count++
+    }
+  }
+  // 根据索引删除
+  removeAt(index) {
+    if(index >= 0 && index < this.count) {
+      let current = this.head
+      if (index === 0) {
+        if (this.size() === 1) {
+          this.head = null
+        } else {
+          let tailNode = this.findEleByIndex(this.size() - 1)
+          this.head = current.next
+          tailNode.next = this.head
+        }
+      }else{
+        let pre = this.findEleByIndex(index - 1)
+        current = pre.next
+        pre.next = current.next
+      }
+      this.count--
+    }
+  }
+}
+
+let link = new CircularLinkedList()
