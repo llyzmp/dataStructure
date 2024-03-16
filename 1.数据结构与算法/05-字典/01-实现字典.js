@@ -18,7 +18,7 @@ class Dictionary{
       return 'NULL'
     } else if(data === undefined) {
       return 'UNDEFINED'
-    } else if(typeof data === 'string' && data instanceof String) {
+    } else if(typeof data === 'string' || data instanceof String) {
       return `${data}`
     }
     return JSON.stringify(data)
