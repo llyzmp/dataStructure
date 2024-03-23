@@ -117,6 +117,25 @@ class BinarySearchTree {
     }
     return current
   }
+  // 查找
+  search(key) {
+    return this.searchNode(this.root, key)
+  }
+  searchNode(node, key) {
+    if(node === null) {
+      return false
+    }
+    // 左侧搜索
+    if(this.compareFn(key, node.key) === Compare.LESS_THAN) {
+      return this.searchNode(node.left, key)
+      // 右侧搜索
+    }else if(this.compareFn(key, node.key) === Compare.BIGGER_THAN) {
+      return this.searchNode(node.right, key)
+    } else {
+      // 根节点
+      return true
+    }
+  }
   // 删除
 }
 
@@ -128,12 +147,12 @@ tree.insert(110)
 tree.insert(80)
 tree.insert(130)
 
-tree.inOrderMap((val) => {
-  console.log(val);
-})
-tree.preOrderMap((val) => {
-  console.log(val);
-})
-tree.postOrderMap((val) => {
-  console.log(val);
-})
+// tree.inOrderMap((val) => {
+//   console.log(val);
+// })
+// tree.preOrderMap((val) => {
+//   console.log(val);
+// })
+// tree.postOrderMap((val) => {
+//   console.log(val);
+// })
