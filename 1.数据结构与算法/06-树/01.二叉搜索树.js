@@ -137,6 +137,47 @@ class BinarySearchTree {
     }
   }
   // 删除
+  remove(key) {
+    this.root = this.removeNode(this.root, key)
+  }
+  removeNode(node, key) {
+    if (node === null) {
+      return null
+    }
+    // 三种情况，左，右，中间
+    // 左侧 
+    if(this.compareFn(key, node.key) === Compare.LESS_THAN){
+      node.left = this.removeNode(node.left, key)
+      return node
+      // 右侧
+    } else if (this.compareFn(key, node.key) === Compare.BIGGER_THAN) {
+      node.right = this.removeNode(node.right, key)
+      return node
+    } else {
+      // 键为node.key, 分三种
+      // 1.该节点没有左右子节点
+      if(node.left === null && node.right === null) {
+        node = null
+        return node
+      }
+      // 有一个子节点，不用担心其中一个节点比上个节点大
+      if(node.left === null) {
+        node = node.right
+        return node
+      } else if(node.right === null) {
+        node = node.left
+        return node
+      }
+
+      // 第三种情况 删除节点子点点有很多
+      // 先查找该节点的右侧节点中最小节点，该最小节点更换到要删除的位置
+      const target = this.minNode(node.right)
+      // 更换值的位置
+      node.key = target.key
+      node.right = this.removeNode(node.right, target.key)
+      return node
+    }
+  }
 }
 
 
