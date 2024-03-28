@@ -18,7 +18,7 @@ function firstUniqStr(str) {
       }
     }
   }
-  const target = result.find(v => v.count === 1)
+  const target = result && result.find(v => v && v.count === 1)
   if(target) {
     return target.index
   } else {
