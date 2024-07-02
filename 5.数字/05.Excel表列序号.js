@@ -35,3 +35,5 @@ var titleToNumber = function(columnTitle) {
 console.log(titleToNumber('A'))
 console.log(titleToNumber('AB'))
 console.log(titleToNumber('ZY'))
+console.log(titleToNumber('ZAA'))
+console.log(titleToNumber('CBA'))
