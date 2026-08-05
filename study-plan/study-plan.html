@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据结构与算法 · 完整学习规划（前端 JS 方向）</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: rgba(255,255,255,0.04);
+      --surface-hover: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.08);
+      --text: #e8e8ec;
+      --text-secondary: rgba(255,255,255,0.6);
+      --text-tertiary: rgba(255,255,255,0.35);
+      --accent: #10b981;
+      --accent-2: #06b6d4;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --coral: #f97316;
+      --purple: #8b5cf6;
+      --font-mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+      --font-sans: -apple-system, 'Inter', system-ui, sans-serif;
+      --radius: 12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 0;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 10%, rgba(16,185,129,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 90%, rgba(6,182,212,0.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    .hero .subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+    .hero .meta {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .chip {
+      padding: 5px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .method {
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .method-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .method-card h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+    .method-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .method-formula {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 16px;
+      background: rgba(16,185,129,0.06);
+      border: 1px solid rgba(16,185,129,0.15);
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    .method-formula .step {
+      padding: 4px 10px;
+      background: rgba(16,185,129,0.1);
+      border-radius: 6px;
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .method-formula .plus {
+      color: var(--text-tertiary);
+    }
+
+    .phase {
+      max-width: 720px;
+      margin: 0 auto 40px;
+      padding: 0 20px;
+    }
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .phase-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .phase-badge.p1 { background: rgba(16,185,129,0.15); color: var(--green); }
+    .phase-badge.p2 { background: rgba(132,204,22,0.15); color: #a3e635; }
+    .phase-badge.p3 { background: rgba(251,191,36,0.15); color: var(--amber); }
+    .phase-badge.p4 { background: rgba(249,115,22,0.15); color: var(--coral); }
+    .phase-badge.p5 { background: rgba(139,92,246,0.15); color: var(--purple); }
+    .phase-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .phase-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-left: auto;
+    }
+
+    .concept {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+    .concept:hover {
+      border-color: rgba(255,255,255,0.15);
+    }
+    .concept-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .concept-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+    .concept-name {
+      font-size: 17px;
+      font-weight: 600;
+    }
+    .concept-anchor {
+      padding: 3px 10px;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--green);
+    }
+    .concept-freq {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    .dims {
+      display: grid;
+      gap: 12px;
+    }
+    .dim {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+    .dim-label {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+      padding-top: 2px;
+    }
+    .dim-value {
+      font-size: 14px;
+      color: var(--text);
+    }
+    .dim-value code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--accent-2);
+    }
+
+    .code-block {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin-top: 4px;
+    }
+    .code-block .kw { color: #c792ea; }
+    .code-block .fn { color: #82aaff; }
+    .code-block .str { color: #c3e88d; }
+    .code-block .num { color: #f78c6c; }
+    .code-block .cmt { color: rgba(255,255,255,0.3); }
+
+    .problems {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .problem-tag {
+      padding: 3px 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+    }
+
+    .review-section {
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .review-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .review-card h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: var(--accent-2);
+    }
+    .review-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .review-table th {
+      text-align: left;
+      padding: 10px 12px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+    }
+    .review-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .review-table td:first-child {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .tips {
+      margin-top: 20px;
+    }
+    .tips li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      padding-left: 20px;
+      position: relative;
+      list-style: none;
+    }
+    .tips li::before {
+      content: '>';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-family: var(--font-mono);
+    }
+
+    .footer-note {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 13px;
+      color: var(--text-tertiary);
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      .dim { grid-template-columns: 1fr; gap: 4px; }
+      .dim-label { padding-top: 0; }
+      .concept { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <h1>数据结构与算法 · 完整学习规划</h1>
+    <p class="subtitle">5 个阶段 · 20 个核心概念 · 每个概念用 6 个维度锚定，确保提名字就知道怎么实现</p>
+    <div class="meta">
+      <span class="chip">JavaScript</span>
+      <span class="chip">前端工程师</span>
+      <span class="chip">每周 3 小时</span>
+      <span class="chip">约 16 周完成</span>
+    </div>
+  </div>
+
+  <div class="method">
+    <div class="method-card">
+      <h2>学习方法论：六维锚定记忆法</h2>
+      <p>每个概念不止背定义，而是用六个维度同时锚定，形成多重记忆通道。看到概念名，六个维度同时激活，想忘都难。</p>
+      <div class="method-formula">
+        <span class="step">概念名</span>
+        <span class="plus">+</span>
+        <span class="step">画面锚（一个比喻画面）</span>
+        <span class="plus">+</span>
+        <span class="step">前端场景（你在哪见过）</span>
+        <span class="plus">+</span>
+        <span class="step">生活场景（日常类比）</span>
+        <span class="plus">+</span>
+        <span class="step">JS 实现（手写代码）</span>
+        <span class="plus">+</span>
+        <span class="step">必刷题（3 道验证题）</span>
+      </div>
+      <ul class="tips">
+        <li><strong>画面锚</strong>是核心：给每个概念一个"一眼画面"，比如数组=连排座位，链表=寻宝接力</li>
+        <li><strong>前端场景</strong>建立职业连接：看到 DOM 树就想到二叉树，看到调用栈就想到栈结构</li>
+        <li><strong>手写实现</strong>不可跳过：能说出来的不算会，能写出来的才算会</li>
+        <li><strong>刷题验证</strong>是终极检验：能独立 AC 3 道 = 这个概念真正掌握了</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge p1">P1</div>
+      <span class="phase-title">线性结构</span>
+      <span class="phase-subtitle">3 周 · 4 个概念</span>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#01</span>
+        <span class="concept-name">数组</span>
+        <span class="concept-anchor">画面锚：连排座位</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">电影院连排座位——每个座位有编号，找 3 号座直接走过去，不用从头数</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">React 列表的 <code>key={index}</code>、<code>Array.from()</code>、V8 引擎的 JS Array 底层实现</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">停车场车位编号，直接开到 12 号位，不用从 1 号开始找</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">连续内存分配 · 索引访问 O(1) · <code>push/pop</code> 均摊 O(1) · <code>shift/unshift</code> O(n) · V8 动态扩容 1.5x</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 手写动态数组核心：扩容机制</span>
+<span class="kw">class</span> <span class="fn">DynamicArray</span> {
+  <span class="fn">constructor</span>() { <span class="kw">this</span>.data = []; <span class="kw">this</span>.size = <span class="num">0</span>; <span class="kw">this</span>.capacity = <span class="num">4</span>; }
+  <span class="fn">push</span>(val) {
+    <span class="kw">if</span> (<span class="kw">this</span>.size === <span class="kw">this</span>.capacity) {
+      <span class="kw">this</span>.capacity *= <span class="num">1.5</span>; <span class="cmt">// 扩容 1.5 倍</span>
+    }
+    <span class="kw">this</span>.data[<span class="kw">this</span>.size++] = val;
+  }
+  <span class="fn">get</span>(i) { <span class="kw">return</span> <span class="kw">this</span>.data[i]; } <span class="cmt">// O(1)</span>
+  <span class="fn">shift</span>() { <span class="cmt">// O(n)：所有元素前移</span>
+    <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < <span class="kw">this</span>.size - <span class="num">1</span>; i++)
+      <span class="kw">this</span>.data[i] = <span class="kw">this</span>.data[i + <span class="num">1</span>];
+    <span class="kw">this</span>.size--;
+  }
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#1 Two Sum</span>
+            <span class="problem-tag">#121 买卖股票</span>
+            <span class="problem-tag">#53 最大子数组和</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#02</span>
+        <span class="concept-name">链表</span>
+        <span class="concept-anchor">画面锚：寻宝接力</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">寻宝游戏——每张纸条写着"下一张在哪里"，你不拿到纸条就不知道下一个地点</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">DOM 的 <code>nextSibling</code> 链、React Fiber 架构的 <code>child/sibling/return</code> 指针链表</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">接力赛交接棒——只能传给下一个人，不能跳过</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">节点 <code>{val, next}</code> · 查找 O(n) · 已定位插入/删除 O(1) · 不需要连续内存 · 单链表/双链表/环形链表</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 手写单链表节点 + 反转链表</span>
+<span class="kw">class</span> <span class="fn">ListNode</span> {
+  <span class="fn">constructor</span>(val) { <span class="kw">this</span>.val = val; <span class="kw">this</span>.next = <span class="kw">null</span>; }
+}
+<span class="kw">function</span> <span class="fn">reverseList</span>(head) {
+  <span class="kw">let</span> prev = <span class="kw">null</span>, curr = head;
+  <span class="kw">while</span> (curr) {
+    <span class="kw">let</span> next = curr.next;  <span class="cmt">// 先记住下一个</span>
+    curr.next = prev;       <span class="cmt">// 掉头指向前一个</span>
+    prev = curr;            <span class="cmt">// prev 前进</span>
+    curr = next;             <span class="cmt">// curr 前进</span>
+  }
+  <span class="kw">return</span> prev; <span class="cmt">// 新头</span>
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#206 反转链表</span>
+            <span class="problem-tag">#21 合并两个有序链表</span>
+            <span class="problem-tag">#141 环形链表</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#03</span>
+        <span class="concept-name">栈与队列</span>
+        <span class="concept-anchor">画面锚：叠盘子 / 排队奶茶</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">栈=叠盘子（最后放的最先拿，LIFO）· 队列=排队买奶茶（先来的先服务，FIFO）</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">栈=JS 函数调用栈、浏览器后退按钮 · 队列=事件循环 task queue、Promise.then 微任务队列</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">栈=弹夹（最后压入的子弹先射出）· 队列=医院叫号（先挂号的先看诊）</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">栈：<code>push/pop</code> · 队列：<code>enqueue/dequeue</code> · 用数组或链表实现 · 进阶：单调栈、双端队列</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 栈：括号匹配（经典面试题）</span>
+<span class="kw">function</span> <span class="fn">isValid</span>(s) {
+  <span class="kw">const</span> stack = [], map = {<span class="str">')'</span>: <span class="str">'('</span>, <span class="str">']'</span>: <span class="str">'['</span>, <span class="str">'}'</span>: <span class="str">'{'</span>};
+  <span class="kw">for</span> (<span class="kw">const</span> c <span class="kw">of</span> s) {
+    <span class="kw">if</span> (c === <span class="str">'('</span> || c === <span class="str">'['</span> || c === <span class="str">'{'</span>) stack.push(c);
+    <span class="kw">else if</span> (stack.pop() !== map[c]) <span class="kw">return</span> <span class="kw">false</span>;
+  }
+  <span class="kw">return</span> stack.length === <span class="num">0</span>;
+}
+<span class="cmt">// 队列：用数组模拟</span>
+<span class="kw">class</span> <span class="fn">Queue</span> {
+  <span class="fn">constructor</span>() { <span class="kw">this</span>.items = []; }
+  <span class="fn">enqueue</span>(x) { <span class="kw">this</span>.items.push(x); }
+  <span class="fn">dequeue</span>() { <span class="kw">return</span> <span class="kw">this</span>.items.shift(); }
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#20 有效括号</span>
+            <span class="problem-tag">#155 最小栈</span>
+            <span class="problem-tag">#739 每日温度</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#04</span>
+        <span class="concept-name">哈希表</span>
+        <span class="concept-anchor">画面锚：字典目录</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">字典目录——翻到字母"D"那一页，直接找到 David 的电话，不用从 A 页开始翻</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">JS <code>Object/Map</code> 底层就是哈希表 · <code>useMemo</code> 缓存 · React <code>ref</code> 存储对象 · 路由表 path→component</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">通讯录按名字查号码 · 快递柜按取件码开柜门</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">哈希函数 key→index · 冲突处理：链地址法/开放寻址法 · JS Object 底层=哈希表 · Map 保持插入序+任意 key</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 手写哈希表（链地址法）</span>
+<span class="kw">class</span> <span class="fn">HashTable</span> {
+  <span class="fn">constructor</span>(size = <span class="num">53</span>) {
+    <span class="kw">this</span>.table = <span class="fn">Array</span>(size).fill(<span class="kw">null</span>).map(() => []);
+  }
+  <span class="fn">_hash</span>(key) {
+    <span class="kw">let</span> h = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">const</span> c <span class="kw">of</span> key) h = (h * <span class="num">31</span> + c.charCodeAt(<span class="num">0</span>)) % <span class="kw">this</span>.table.length;
+    <span class="kw">return</span> h;
+  }
+  <span class="fn">set</span>(key, val) { <span class="kw">this</span>.table[<span class="kw">this</span>._hash(key)].push([key, val]); }
+  <span class="fn">get</span>(key) {
+    <span class="kw">const</span> bucket = <span class="kw">this</span>.table[<span class="kw">this</span>._hash(key)];
+    <span class="kw">return</span> bucket.find(([k]) => k === key)?.[<span class="num">1</span>];
+  }
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#1 Two Sum</span>
+            <span class="problem-tag">#49 字母异位分组</span>
+            <span class="problem-tag">#3 最长无重复子串</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge p2">P2</div>
+      <span class="phase-title">树形结构</span>
+      <span class="phase-subtitle">3 周 · 3 个概念</span>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#05</span>
+        <span class="concept-name">二叉树</span>
+        <span class="concept-anchor">画面锚：家谱树</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">家谱树——每个人最多两个孩子（左大右小或左先右后），层层往下展开</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">DOM 树（每个元素=节点，子元素=孩子）· React 组件树 · AST 抽象语法树 · Babel/webpack 的依赖树</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">族谱/家谱 · 公司组织架构图（每个人最多两个直接下属）</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">节点 <code>{val, left, right}</code> · 前序（根左右）/中序（左根右）/后序（左右根）· 层序（BFS）· 递归 vs 迭代</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 三种遍历（递归版）</span>
+<span class="kw">function</span> <span class="fn">traverse</span>(root) {
+  <span class="kw">if</span> (!root) <span class="kw">return</span>;
+  <span class="cmt">// 前序：在这行 console.log(root.val)</span>
+  <span class="fn">traverse</span>(root.left);
+  <span class="cmt">// 中序：在这行 console.log(root.val)</span>
+  <span class="fn">traverse</span>(root.right);
+  <span class="cmt">// 后序：在这行 console.log(root.val)</span>
+}
+<span class="cmt">// 层序遍历（BFS）</span>
+<span class="kw">function</span> <span class="fn">levelOrder</span>(root) {
+  <span class="kw">if</span> (!root) <span class="kw">return</span> [];
+  <span class="kw">const</span> q = [root], res = [];
+  <span class="kw">while</span> (q.length) {
+    <span class="kw">const</span> level = [];
+    <span class="kw">const</span> size = q.length;
+    <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < size; i++) {
+      <span class="kw">const</span> node = q.shift();
+      level.push(node.val);
+      <span class="kw">if</span> (node.left) q.push(node.left);
+      <span class="kw">if</span> (node.right) q.push(node.right);
+    }
+    res.push(level);
+  }
+  <span class="kw">return</span> res;
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#104 最大深度</span>
+            <span class="problem-tag">#226 翻转二叉树</span>
+            <span class="problem-tag">#102 层序遍历</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#06</span>
+        <span class="concept-name">二叉搜索树 BST</span>
+        <span class="concept-anchor">画面锚：左小右大</span>
+        <span class="concept-freq">面试频率 ★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">左小右大——站一个人当"班长"，比他矮的站左边，比他高的站右边，每个小组再重复</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">很少直接用，但思想在前端搜索优化、二分法中无处不在</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">字典翻页——要找"M"开头的词，翻到"L"觉得小了往后翻，翻到"N"觉得大了往前翻</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">左子树所有值 < 根 < 右子树所有值 · 查找/插入/删除平均 O(log n)，最坏 O(n) · 中序遍历=有序序列</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// BST 搜索：利用左小右大特性</span>
+<span class="kw">function</span> <span class="fn">searchBST</span>(root, val) {
+  <span class="kw">while</span> (root) {
+    <span class="kw">if</span> (val === root.val) <span class="kw">return</span> root;
+    root = val < root.val ? root.left : root.right; <span class="cmt">// 小了往左，大了往右</span>
+  }
+  <span class="kw">return</span> <span class="kw">null</span>;
+}
+<span class="cmt">// 验证 BST：中序遍历必须递增</span>
+<span class="kw">function</span> <span class="fn">isValidBST</span>(root, min = -Infinity, max = Infinity) {
+  <span class="kw">if</span> (!root) <span class="kw">return</span> <span class="kw">true</span>;
+  <span class="kw">if</span> (root.val <= min || root.val >= max) <span class="kw">return</span> <span class="kw">false</span>;
+  <span class="kw">return</span> <span class="fn">isValidBST</span>(root.left, min, root.val) &&
+         <span class="fn">isValidBST</span>(root.right, root.val, max);
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#98 验证BST</span>
+            <span class="problem-tag">#230 第K小</span>
+            <span class="problem-tag">#700 BST搜索</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#07</span>
+        <span class="concept-name">堆</span>
+        <span class="concept-anchor">画面锚：金字塔</span>
+        <span class="concept-freq">面试频率 ★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">金字塔——最大的石头永远在塔尖（大顶堆），拿走塔尖后重新调整，次大的顶上来</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">很少直接用，但理解优先队列很重要——任务调度、事件优先级排序</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">扑克牌堆——每次只看最上面那张 · 急诊室——最危重的病人优先（优先队列）</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">完全二叉树 + 堆序性 · 大顶堆：父 >= 子 · 数组实现：<code>parent(i)=(i-1)/2, left(i)=2i+1, right(i)=2i+2</code> · 插入=上浮，删除=下沉</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 最小堆核心操作</span>
+<span class="kw">class</span> <span class="fn">MinHeap</span> {
+  <span class="fn">constructor</span>() { <span class="kw">this</span>.heap = []; }
+  <span class="fn">insert</span>(val) {
+    <span class="kw">this</span>.heap.push(val);
+    <span class="kw">this</span>.<span class="fn">_siftUp</span>(<span class="kw">this</span>.heap.length - <span class="num">1</span>);
+  }
+  <span class="fn">extractMin</span>() {
+    <span class="kw">const</span> min = <span class="kw">this</span>.heap[<span class="num">0</span>];
+    <span class="kw">const</span> last = <span class="kw">this</span>.heap.pop();
+    <span class="kw">if</span> (<span class="kw">this</span>.heap.length) {
+      <span class="kw">this</span>.heap[<span class="num">0</span>] = last;
+      <span class="kw">this</span>.<span class="fn">_siftDown</span>(<span class="num">0</span>);
+    }
+    <span class="kw">return</span> min;
+  }
+  <span class="fn">_siftUp</span>(i) {
+    <span class="kw">while</span> (i > <span class="num">0</span>) {
+      <span class="kw">const</span> p = <span class="fn">Math</span>.floor((i - <span class="num">1</span>) / <span class="num">2</span>);
+      <span class="kw">if</span> (<span class="kw">this</span>.heap[p] <= <span class="kw">this</span>.heap[i]) <span class="kw">break</span>;
+      [<span class="kw">this</span>.heap[p], <span class="kw">this</span>.heap[i]] = [<span class="kw">this</span>.heap[i], <span class="kw">this</span>.heap[p]];
+      i = p;
+    }
+  }
+  <span class="fn">_siftDown</span>(i) { <span class="cmt">/* 对称操作 */</span> }
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#215 第K大</span>
+            <span class="problem-tag">#347 前K高频</span>
+            <span class="problem-tag">#23 合并K个链表</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge p3">P3</div>
+      <span class="phase-title">算法基础</span>
+      <span class="phase-subtitle">3 周 · 4 个概念</span>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#08</span>
+        <span class="concept-name">复杂度分析</span>
+        <span class="concept-anchor">画面锚：效率体检</span>
+        <span class="concept-freq">面试频率 ★★★★★（隐性考察）</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">效率体检——两个指标：跑多久（时间复杂度）+ 占多大地方（空间复杂度）</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">性能优化——选择 O(n) 还是 O(n²) 的算法直接影响页面渲染速度 · Lighthouse 性能评分</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">做饭——10 个人做饭 vs 1 个人做饭的时间差（并行 vs 串行）· 用几个锅（空间复杂度）</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) · 均摊分析：push 的均摊 O(1) · 最好/最坏/平均</div></div>
+        <div class="dim"><div class="dim-label">口诀</div><div class="dim-value">"常数对数线性，线性对数平方，指数爆炸不要它"——1, log, n, nlogn, n², 2ⁿ</div></div>
+        <div class="dim"><div class="dim-label">练习</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">分析任意代码复杂度</span>
+            <span class="problem-tag">嵌套循环 = O(n²)</span>
+            <span class="problem-tag">递归 = 画递归树</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#09</span>
+        <span class="concept-name">排序算法</span>
+        <span class="concept-anchor">画面锚：整理书架</span>
+        <span class="concept-freq">面试频率 ★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">整理书架的五种方式——冒泡(相邻换位)、选择(找最矮的)、插入(像理扑克牌)、快排(选班长分区)、归并(两组合并)</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value"><code>Array.sort()</code> 底层——V8 引擎用 TimSort（归并+插入的混合体）· 自定义排序 comparator</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">理扑克牌(插入排序) · 体育课按身高排队(选择排序) · 两个已排好的队伍合并(归并)</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">冒泡/选择/插入 O(n²) · 快排/归并 O(n log n) · 快排选基准分区 · 归并分治后合并有序数组</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 快排：选班长分区法</span>
+<span class="kw">function</span> <span class="fn">quickSort</span>(arr) {
+  <span class="kw">if</span> (arr.length <= <span class="num">1</span>) <span class="kw">return</span> arr;
+  <span class="kw">const</span> pivot = arr[<span class="num">0</span>];
+  <span class="kw">const</span> left = arr.slice(<span class="num">1</span>).filter(x => x < pivot);  <span class="cmt">// 比班长矮的</span>
+  <span class="kw">const</span> right = arr.slice(<span class="num">1</span>).filter(x => x >= pivot); <span class="cmt">// 比班长高的</span>
+  <span class="kw">return</span> [...<span class="fn">quickSort</span>(left), pivot, ...<span class="fn">quickSort</span>(right)];
+}
+<span class="cmt">// 归并：两组合并法</span>
+<span class="kw">function</span> <span class="fn">mergeSort</span>(arr) {
+  <span class="kw">if</span> (arr.length <= <span class="num">1</span>) <span class="kw">return</span> arr;
+  <span class="kw">const</span> mid = <span class="fn">Math</span>.floor(arr.length / <span class="num">2</span>);
+  <span class="kw">const</span> left = <span class="fn">mergeSort</span>(arr.slice(<span class="num">0</span>, mid));
+  <span class="kw">const</span> right = <span class="fn">mergeSort</span>(arr.slice(mid));
+  <span class="kw">return</span> <span class="fn">merge</span>(left, right); <span class="cmt">// 合并两个有序数组</span>
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#912 排序数组</span>
+            <span class="problem-tag">#347 前K高频</span>
+            <span class="problem-tag">#56 合并区间</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#10</span>
+        <span class="concept-name">二分查找</span>
+        <span class="concept-anchor">画面锚：猜数字</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">猜数字游戏——1 到 100 之间猜，每次猜中间值，大了就砍掉一半，O(log n) 次必中</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">虚拟列表二分查找可见区域 · npm 包版本号范围解析</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">字典翻页（从中间翻，大了往前，小了往后）· 猜价格游戏（每次砍一半）</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">前提：有序数组 · 每次取中间值比较砍一半 · O(log n) · 注意边界 <code>left <= right</code> vs <code>left < right</code></div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 经典二分查找</span>
+<span class="kw">function</span> <span class="fn">binarySearch</span>(arr, target) {
+  <span class="kw">let</span> left = <span class="num">0</span>, right = arr.length - <span class="num">1</span>;
+  <span class="kw">while</span> (left <= right) {
+    <span class="kw">const</span> mid = left + ((right - left) >> <span class="num">1</span>); <span class="cmt">// 防溢出</span>
+    <span class="kw">if</span> (arr[mid] === target) <span class="kw">return</span> mid;
+    <span class="kw">if</span> (arr[mid] < target) left = mid + <span class="num">1</span>;
+    <span class="kw">else</span> right = mid - <span class="num">1</span>;
+  }
+  <span class="kw">return</span> -<span class="num">1</span>;
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#704 二分查找</span>
+            <span class="problem-tag">#35 搜索插入位置</span>
+            <span class="problem-tag">#162 寻找峰值</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#11</span>
+        <span class="concept-name">递归与分治</span>
+        <span class="concept-anchor">画面锚：俄罗斯套娃</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">俄罗斯套娃——打开一个里面还有一个更小的，一直打开到最小的那个（基线条件），然后逐层合回来</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">React 组件递归渲染树 · <code>JSON.parse/stringify</code> 深拷贝 · DOM 树深度遍历 · 无限级联菜单</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">俄罗斯套娃 · "传递故事"——每个人听前一个人讲的故事再传给下一个</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">基线条件(base case)终止 · 递归条件缩小问题 · 分治=分解→解决→合并 · 注意栈溢出 · JS 尾调用优化有限</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 递归三步法：1.基线 2.缩小 3.合并</span>
+<span class="kw">function</span> <span class="fn">fib</span>(n) {
+  <span class="kw">if</span> (n <= <span class="num">1</span>) <span class="kw">return</span> n;  <span class="cmt">// 1. 基线条件</span>
+  <span class="kw">return</span> <span class="fn">fib</span>(n - <span class="num">1</span>) + <span class="fn">fib</span>(n - <span class="num">2</span>); <span class="cmt">// 2+3. 缩小+合并</span>
+}
+<span class="cmt">// 分治法：归并排序就是经典分治</span>
+<span class="cmt">// 分解：数组对半切 → 解决：每半排序 → 合并：两个有序数组合并</span></pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#70 爬楼梯</span>
+            <span class="problem-tag">#104 树的最大深度</span>
+            <span class="problem-tag">#169 多数元素</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge p4">P4</div>
+      <span class="phase-title">高级技巧</span>
+      <span class="phase-subtitle">3 周 · 4 个概念</span>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#12</span>
+        <span class="concept-name">双指针</span>
+        <span class="concept-anchor">画面锚：两端扫雷</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">两人扫雷——一个人从走廊左端开始扫，一个人从右端开始扫，在中间相遇</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">字符串回文检测 · 数组去重 · 两数之和（有序数组）</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">两个人从走廊两端扫地，在中间碰头 · 翻书从两头往中间翻</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">对撞指针：left 从头，right 从尾，向中间移动 · 快慢指针：同方向不同速度 · O(n) 时间 O(1) 空间</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 对撞指针：两数之和（有序数组）</span>
+<span class="kw">function</span> <span class="fn">twoSum</span>(arr, target) {
+  <span class="kw">let</span> left = <span class="num">0</span>, right = arr.length - <span class="num">1</span>;
+  <span class="kw">while</span> (left < right) {
+    <span class="kw">const</span> sum = arr[left] + arr[right];
+    <span class="kw">if</span> (sum === target) <span class="kw">return</span> [left, right];
+    <span class="kw">if</span> (sum < target) left++;  <span class="cmt">// 和太小，左指针右移</span>
+    <span class="kw">else</span> right--;            <span class="cmt">// 和太大，右指针左移</span>
+  }
+}
+<span class="cmt">// 快慢指针：判断环形链表</span>
+<span class="kw">function</span> <span class="fn">hasCycle</span>(head) {
+  <span class="kw">let</span> slow = head, fast = head;
+  <span class="kw">while</span> (fast && fast.next) {
+    slow = slow.next;          <span class="cmt">// 慢的走 1 步</span>
+    fast = fast.next.next;     <span class="cmt">// 快的走 2 步</span>
+    <span class="kw">if</span> (slow === fast) <span class="kw">return</span> <span class="kw">true</span>; <span class="cmt">// 相遇=有环</span>
+  }
+  <span class="kw">return</span> <span class="kw">false</span>;
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#167 两数之和II</span>
+            <span class="problem-tag">#11 盛最多水</span>
+            <span class="problem-tag">#26 删除重复项</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#13</span>
+        <span class="concept-name">滑动窗口</span>
+        <span class="concept-anchor">画面锚：取景框</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">相机取景框——框住一段风景，框整体滑动，框内始终是连续的一段</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">虚拟列表 <code>react-window</code> 只渲染可见窗口 · 懒加载视口检测 <code>IntersectionObserver</code></div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">相机取景框滑动拍全景 · 望远镜扫过夜空</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">维护窗口 <code>[left, right]</code> · 右扩左缩找最优 · 常用于子串/子数组 · O(n) 时间</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 最长无重复字符子串</span>
+<span class="kw">function</span> <span class="fn">lengthOfLongestSubstring</span>(s) {
+  <span class="kw">const</span> seen = <span class="kw">new</span> <span class="fn">Map</span>(); <span class="cmt">// 窗口内字符记录</span>
+  <span class="kw">let</span> left = <span class="num">0</span>, max = <span class="num">0</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> right = <span class="num">0</span>; right < s.length; right++) {
+    <span class="kw">if</span> (seen.has(s[right]))
+      left = <span class="fn">Math</span>.max(left, seen.get(s[right]) + <span class="num">1</span>); <span class="cmt">// 左缩</span>
+    seen.set(s[right], right);
+    max = <span class="fn">Math</span>.max(max, right - left + <span class="num">1</span>); <span class="cmt">// 更新最大窗口</span>
+  }
+  <span class="kw">return</span> max;
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#3 最长无重复子串</span>
+            <span class="problem-tag">#76 最小覆盖子串</span>
+            <span class="problem-tag">#239 滑动窗口最大值</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#14</span>
+        <span class="concept-name">BFS 广度优先</span>
+        <span class="concept-anchor">画面锚：水波扩散</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">往水里扔石子——波纹一圈一圈向外扩散，先到近的再到远的</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">DOM 层级遍历（先找 body 的直接子元素，再找孙子元素）· 广播事件 · 状态管理 store 的层序更新</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">水波纹扩散 · 声音从近到远传播 · 地铁站从起点一站站往外搜</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">用队列实现 · 逐层遍历先访问近的 · 适合找最短路径 · 空间 O(w)，w=最大宽度</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// BFS 模板（队列驱动）</span>
+<span class="kw">function</span> <span class="fn">bfs</span>(start) {
+  <span class="kw">const</span> queue = [start];
+  <span class="kw">const</span> visited = <span class="kw">new</span> <span class="fn">Set</span>([start]);
+  <span class="kw">while</span> (queue.length) {
+    <span class="kw">const</span> node = queue.shift();
+    <span class="kw">for</span> (<span class="kw">const</span> next <span class="kw">of</span> <span class="fn">getNeighbors</span>(node)) {
+      <span class="kw">if</span> (!visited.has(next)) {
+        visited.add(next);
+        queue.push(next);
+      }
+    }
+  }
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#102 层序遍历</span>
+            <span class="problem-tag">#127 单词接龙</span>
+            <span class="problem-tag">#1091 最短路径</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#15</span>
+        <span class="concept-name">DFS 深度优先与回溯</span>
+        <span class="concept-anchor">画面锚：走迷宫</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">走迷宫——遇到岔路先一条路走到黑，走不通了退回上一个岔路口换条路（回溯）</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">DOM 深度遍历 · 路由匹配（Next.js 动态路由）· webpack 模块依赖追踪</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">走迷宫 · 走山路遇岔路口先走到底再回头 · 下棋想后面几步</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">用栈或递归实现 · 一条路走到黑回退 · 回溯=DFS+撤销选择 · 适合排列组合/所有解</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 回溯模板：全排列</span>
+<span class="kw">function</span> <span class="fn">permute</span>(nums) {
+  <span class="kw">const</span> result = [];
+  <span class="kw">function</span> <span class="fn">backtrack</span>(path, used) {
+    <span class="kw">if</span> (path.length === nums.length) {
+      result.push([...path]); <span class="cmt">// 收集结果</span>
+      <span class="kw">return</span>;
+    }
+    <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < nums.length; i++) {
+      <span class="kw">if</span> (used[i]) <span class="kw">continue</span>;
+      path.push(nums[i]);     <span class="cmt">// 做选择</span>
+      used[i] = <span class="kw">true</span>;
+      <span class="fn">backtrack</span>(path, used); <span class="cmt">// 递归</span>
+      path.pop();             <span class="cmt">// 撤销选择（回溯！）</span>
+      used[i] = <span class="kw">false</span>;
+    }
+  }
+  <span class="fn">backtrack</span>([], []);
+  <span class="kw">return</span> result;
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#46 全排列</span>
+            <span class="problem-tag">#78 子集</span>
+            <span class="problem-tag">#79 单词搜索</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-badge p5">P5</div>
+      <span class="phase-title">高级算法</span>
+      <span class="phase-subtitle">4 周 · 5 个概念</span>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#16</span>
+        <span class="concept-name">贪心算法</span>
+        <span class="concept-anchor">画面锚：只看眼前</span>
+        <span class="concept-freq">面试频率 ★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">自助餐策略——每一步都拿眼前最贵的，不回头看也不规划全局</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">任务调度优先级 · 资源分配策略</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">找零钱先用大面额 · 自助餐先拿贵的 · 旅行先去最近的城市</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">每步选局部最优 · 不保证全局最优 · 需证明贪心选择性质 · 通常 O(n log n)</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 分发饼干（贪心）</span>
+<span class="kw">function</span> <span class="fn">findContentChildren</span>(g, s) {
+  g.sort((a, b) => a - b); <span class="cmt">// 胃口排序</span>
+  s.sort((a, b) => a - b); <span class="cmt">// 饼干排序</span>
+  <span class="kw">let</span> i = <span class="num">0</span>;
+  <span class="kw">for</span> (<span class="kw">const</span> cookie <span class="kw">of</span> s) {
+    <span class="kw">if</span> (i < g.length && cookie >= g[i]) i++; <span class="cmt">// 最小饼干满足最小胃口</span>
+  }
+  <span class="kw">return</span> i;
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#455 分发饼干</span>
+            <span class="problem-tag">#55 跳跃游戏</span>
+            <span class="problem-tag">#621 任务调度</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#17</span>
+        <span class="concept-name">动态规划</span>
+        <span class="concept-anchor">画面锚：记笔记省重做</span>
+        <span class="concept-freq">面试频率 ★★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">记笔记——算 1+1=2 记下来，算 1+2=3 时直接用之前记的 2，不重复算</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">React <code>useMemo</code> 原理相同 · 路由缓存 · 虚拟 DOM diff 优化</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">背乘法口诀表 · 做菜先备好半成品 · 打游戏存档避免重来</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">三要素：状态定义+转移方程+初始条件 · 自顶向下=记忆化递归 · 自底向上=迭代 DP · 空间优化=滚动数组</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// DP 三步法：1.定义状态 2.找转移方程 3.确定初始值</span>
+<span class="cmt">// 爬楼梯：dp[i] = dp[i-1] + dp[i-2]</span>
+<span class="kw">function</span> <span class="fn">climbStairs</span>(n) {
+  <span class="kw">if</span> (n <= <span class="num">2</span>) <span class="kw">return</span> n;
+  <span class="kw">const</span> dp = [<span class="num">0</span>, <span class="num">1</span>, <span class="num">2</span>]; <span class="cmt">// 3. 初始值</span>
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">3</span>; i <= n; i++)
+    dp[i] = dp[i - <span class="num">1</span>] + dp[i - <span class="num">2</span>]; <span class="cmt">// 2. 转移方程</span>
+  <span class="kw">return</span> dp[n]; <span class="cmt">// 1. dp[i]=爬到第i层的方法数</span>
+}
+<span class="cmt">// 空间优化版：滚动变量</span>
+<span class="kw">function</span> <span class="fn">climbStairs2</span>(n) {
+  <span class="kw">let</span> prev = <span class="num">1</span>, curr = <span class="num">2</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">3</span>; i <= n; i++) [prev, curr] = [curr, prev + curr];
+  <span class="kw">return</span> curr;
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#70 爬楼梯</span>
+            <span class="problem-tag">#322 零钱兑换</span>
+            <span class="problem-tag">#1143 最长公共子序列</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#18</span>
+        <span class="concept-name">图论基础</span>
+        <span class="concept-anchor">画面锚：地铁线路图</span>
+        <span class="concept-freq">面试频率 ★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">地铁线路图——站点+线路，从 A 站到 B 站可以经过多个中转站，有多条路线</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">webpack 模块依赖图 · 组件依赖关系分析 · 微前端路由图</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">地铁线路图 · 社交关系网（谁认识谁）· 导航路线规划</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">表示：邻接矩阵/邻接表 · BFS=最短路径(无权) · DFS=连通性检测 · 拓扑排序=有向无环图</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 邻接表表示图 + BFS 最短路径</span>
+<span class="kw">class</span> <span class="fn">Graph</span> {
+  <span class="fn">constructor</span>() { <span class="kw">this</span>.adj = <span class="kw">new</span> <span class="fn">Map</span>(); }
+  <span class="fn">addEdge</span>(u, v) {
+    (<span class="kw">this</span>.adj.get(u) || <span class="kw">this</span>.adj.set(u, []).get(u)).push(v);
+    (<span class="kw">this</span>.adj.get(v) || <span class="kw">this</span>.adj.set(v, []).get(v)).push(u);
+  }
+  <span class="fn">bfsShortestPath</span>(start, end) {
+    <span class="kw">const</span> queue = [[start, <span class="num">0</span>]];
+    <span class="kw">const</span> visited = <span class="kw">new</span> <span class="fn">Set</span>([start]);
+    <span class="kw">while</span> (queue.length) {
+      <span class="kw">const</span> [node, dist] = queue.shift();
+      <span class="kw">if</span> (node === end) <span class="kw">return</span> dist;
+      <span class="kw">for</span> (<span class="kw">const</span> next <span class="kw">of</span> <span class="kw">this</span>.adj.get(node) || [])
+        <span class="kw">if</span> (!visited.has(next)) { visited.add(next); queue.push([next, dist + <span class="num">1</span>]); }
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+  }
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#200 岛屿数量</span>
+            <span class="problem-tag">#207 课程表</span>
+            <span class="problem-tag">#133 克隆图</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#19</span>
+        <span class="concept-name">前缀和</span>
+        <span class="concept-anchor">画面锚：累计账本</span>
+        <span class="concept-freq">面试频率 ★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">累计账本——每页写"到目前为止花了多少"，查第 3-7 天花费直接用第 7 页减第 2 页</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">数据可视化中累加计算 · 日志分析区间统计</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">记账本每页写累计金额 · 水电费账单按月累计</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value"><code>prefix[i] = arr[0]+...+arr[i-1]</code> · 区间和 <code>[l,r] = prefix[r+1]-prefix[l]</code> · O(n) 预处理 O(1) 查询</div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 前缀和 + 区间查询</span>
+<span class="kw">class</span> <span class="fn">PrefixSum</span> {
+  <span class="fn">constructor</span>(arr) {
+    <span class="kw">this</span>.prefix = [<span class="num">0</span>]; <span class="cmt">// prefix[0] = 0</span>
+    <span class="kw">for</span> (<span class="kw">const</span> num <span class="kw">of</span> arr)
+      <span class="kw">this</span>.prefix.push(<span class="kw">this</span>.prefix[<span class="kw">this</span>.prefix.length - <span class="num">1</span>] + num);
+  }
+  <span class="fn">rangeSum</span>(l, r) { <span class="cmt">// [l, r] 闭区间</span>
+    <span class="kw">return</span> <span class="kw">this</span>.prefix[r + <span class="num">1</span>] - <span class="kw">this</span>.prefix[l];
+  }
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#1480 一维动态和</span>
+            <span class="problem-tag">#303 区域和检索</span>
+            <span class="problem-tag">#560 和为K的子数组</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-num">#20</span>
+        <span class="concept-name">单调栈</span>
+        <span class="concept-anchor">画面锚：递减塔</span>
+        <span class="concept-freq">面试频率 ★★★★</span>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="dim-label">画面锚</div><div class="dim-value">递减塔——从底到顶递减排列，新来的比栈顶矮就挤掉栈顶（弹出），直到能放进去</div></div>
+        <div class="dim"><div class="dim-label">前端场景</div><div class="dim-value">很少直接用，但理解"维护单调性"的思想在前端性能优化中有用</div></div>
+        <div class="dim"><div class="dim-label">生活场景</div><div class="dim-value">等公交——后面来的车比前面的编号小就替换掉前面的 · 打擂台——弱的被强的踢下去</div></div>
+        <div class="dim"><div class="dim-label">JS 实现要点</div><div class="dim-value">维护单调递增/递减的栈 · 找"下一个更大/更小元素" · O(n) · 核心模式：<code>while 栈顶不满足条件就弹出</code></div></div>
+        <div class="dim"><div class="dim-label">实现代码</div><div class="dim-value">
+<pre class="code-block"><span class="cmt">// 每日温度（单调递减栈）</span>
+<span class="kw">function</span> <span class="fn">dailyTemperatures</span>(T) {
+  <span class="kw">const</span> result = <span class="fn">Array</span>(T.length).fill(<span class="num">0</span>);
+  <span class="kw">const</span> stack = []; <span class="cmt">// 存索引，栈内温度递减</span>
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < T.length; i++) {
+    <span class="kw">while</span> (stack.length && T[i] > T[stack[stack.length - <span class="num">1</span>]]) {
+      <span class="kw">const</span> top = stack.pop();
+      result[top] = i - top; <span class="cmt">// 找到比栈顶大的了</span>
+    }
+    stack.push(i);
+  }
+  <span class="kw">return</span> result;
+}</pre>
+        </div></div>
+        <div class="dim"><div class="dim-label">必刷题</div><div class="dim-value">
+          <div class="problems">
+            <span class="problem-tag">#739 每日温度</span>
+            <span class="problem-tag">#496 下一个更大元素</span>
+            <span class="problem-tag">#84 柱状图最大矩形</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="review-section">
+    <div class="review-card">
+      <h2>间隔复习计划（艾宾浩斯遗忘曲线）</h2>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">学完一个概念后，按以下间隔复习。复习时只需回忆"画面锚 + 实现要点 + 做 1 道题"，不用重学。</p>
+      <table class="review-table">
+        <thead>
+          <tr><th>复习轮次</th><th>间隔时间</th><th>复习方式</th><th>通过标准</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>第 1 轮</td><td>学完后 1 天</td><td>回忆画面锚 + 默写实现代码</td><td>代码能默写 80%</td></tr>
+          <tr><td>第 2 轮</td><td>学完后 3 天</td><td>重做 1 道必刷题</td><td>独立 AC</td></tr>
+          <tr><td>第 3 轮</td><td>学完后 7 天</td><td>不看代码重写实现</td><td>核心逻辑正确</td></tr>
+          <tr><td>第 4 轮</td><td>学完后 14 天</td><td>换一道新题做</td><td>能识别题型并应用</td></tr>
+          <tr><td>第 5 轮</td><td>学完后 30 天</td><td>给别人讲解这个概念</td><td>能讲清楚原理</td></tr>
+        </tbody>
+      </table>
+      <ul class="tips">
+        <li><strong>回忆优于重读</strong>：复习时先闭眼回忆画面锚，再打开文档验证</li>
+        <li><strong>交错练习</strong>：同一天复习不同阶段的概念，比只复习同阶段效果好</li>
+        <li><strong>失败就重置</strong>：某轮复习如果答不出来，间隔重置为 1 天</li>
+        <li><strong>每周总结</strong>：周末花 15 分钟画一张本周概念的"关系图"，把概念连起来</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="review-section">
+    <div class="review-card">
+      <h2>每周学习节奏建议（3 小时/周）</h2>
+      <table class="review-table">
+        <thead>
+          <tr><th>时段</th><th>时长</th><th>任务</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>工作日碎片</td><td>30 分钟</td><td>回忆本周画面锚 + 看实现代码</td></tr>
+          <tr><td>周六上午</td><td>90 分钟</td><td>学习 1 个新概念：读原理 → 手写代码 → 做 1 题</td></tr>
+          <tr><td>周日晚上</td><td>60 分钟</td><td>做 2 道必刷题 + 复习上周概念</td></tr>
+        </tbody>
+      </table>
+      <ul class="tips">
+        <li><strong>手写代码是硬指标</strong>：能看懂 ≠ 会写，每学一个概念必须手写一遍实现</li>
+        <li><strong>刷题不是背题</strong>：做题时先想"这个题对应哪个画面锚"，再动手</li>
+        <li><strong>建立概念连接</strong>：学到后面阶段时，主动想"这和前面的什么概念有关联"</li>
+        <li><strong>遇到困难别硬扛</strong>：一道题想 20 分钟没思路就看题解，理解后重写一遍</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    数据结构与算法 · 完整学习规划 · 20 概念 × 6 维度锚定 · 约 16 周完成
+  </div>
+
+</body>
+</html>
