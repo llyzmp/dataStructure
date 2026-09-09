@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>刷题游戏面板 · 数据结构与算法</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: rgba(255,255,255,0.04);
+      --surface-2: rgba(255,255,255,0.06);
+      --surface-hover: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.08);
+      --border-bright: rgba(255,255,255,0.15);
+      --text: #e8e8ec;
+      --text-secondary: rgba(255,255,255,0.6);
+      --text-tertiary: rgba(255,255,255,0.35);
+      --green: #34d399;
+      --amber: #fbbf24;
+      --coral: #f97316;
+      --purple: #8b5cf6;
+      --pink: #ec4899;
+      --red: #ef4444;
+      --cyan: #06b6d4;
+      --font-mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+      --font-sans: -apple-system, 'Inter', system-ui, sans-serif;
+      --radius: 14px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(139,92,246,0.10) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 10%, rgba(6,182,212,0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+
+    /* ===== HERO ===== */
+    .hero {
+      text-align: center;
+      padding: 44px 20px 10px;
+    }
+    .hero h1 {
+      font-size: 26px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .hero .subtitle { font-size: 13px; color: var(--text-secondary); }
+
+    /* ===== RANK CARD ===== */
+    .rank-card {
+      margin-top: 26px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 28px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+    .rank-badge {
+      width: 84px; height: 84px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 42px;
+      flex-shrink: 0;
+      border: 2px solid var(--border-bright);
+      transition: all 0.4s;
+    }
+    .rank-info { flex: 1; min-width: 200px; }
+    .rank-name {
+      font-size: 22px; font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .rank-xp { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+    .xp-bar-wrap {
+      height: 10px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .xp-bar {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
+    }
+    .rank-next { font-size: 12px; color: var(--text-tertiary); margin-top: 8px; }
+    .rank-flavor { font-size: 12px; color: var(--text-tertiary); margin-top: 4px; }
+
+    /* ===== STREAK ===== */
+    .streak-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      flex: 1;
+      min-width: 150px;
+      text-align: center;
+    }
+    .stat-num { font-size: 30px; font-weight: 700; line-height: 1.1; }
+    .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+    .stat-num.fire { color: var(--coral); }
+    .stat-num.done { color: var(--green); }
+    .stat-num.book { color: var(--purple); }
+
+    /* ===== HEATMAP ===== */
+    .heatmap-card {
+      margin-top: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+    }
+    .heatmap-title { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: var(--text-secondary); }
+    .heatmap {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .day-cell {
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.06);
+      position: relative;
+      cursor: default;
+    }
+    .day-cell.on { background: var(--green); }
+    .day-cell.today { outline: 1px solid rgba(255,255,255,0.5); }
+
+    /* ===== ACTIONS ===== */
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .action-btn {
+      flex: 1;
+      min-width: 160px;
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .action-btn:hover { border-color: var(--border-bright); background: var(--surface-hover); transform: translateY(-2px); }
+    .action-btn .ab-icon { font-size: 24px; }
+    .action-btn .ab-xp { font-size: 11px; color: var(--amber); font-weight: 500; }
+    .action-btn.primary { background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.3); }
+    .action-btn.primary .ab-xp { color: var(--green); }
+    .action-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+    .action-btn:disabled:hover { background: var(--surface-2); border-color: var(--border); }
+
+    /* ===== ACHIEVEMENTS ===== */
+    .section { margin-top: 30px; }
+    .section-title {
+      font-size: 16px; font-weight: 600;
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title .badge {
+      font-size: 11px; padding: 3px 8px; border-radius: 6px;
+      background: var(--surface-2); color: var(--text-secondary); font-weight: 500;
+    }
+    .ach-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 10px;
+    }
+    .ach-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 12px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .ach-card.locked { opacity: 0.45; }
+    .ach-card.unlocked { border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.05); }
+    .ach-icon { font-size: 28px; margin-bottom: 8px; }
+    .ach-name { font-size: 12px; font-weight: 600; }
+    .ach-desc { font-size: 10px; color: var(--text-tertiary); margin-top: 3px; }
+
+    /* ===== CHALLENGE ===== */
+    .challenge-card {
+      margin-top: 14px;
+      background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(6,182,212,0.05));
+      border: 1px solid rgba(139,92,246,0.2);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .challenge-tag {
+      font-size: 11px; padding: 4px 10px; border-radius: 6px;
+      background: rgba(139,92,246,0.15); color: var(--purple); font-weight: 600;
+    }
+    .challenge-name { font-size: 17px; font-weight: 600; }
+    .challenge-meta { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .challenge-info { flex: 1; min-width: 200px; }
+
+    /* ===== TIMER ===== */
+    .timer-card {
+      margin-top: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      text-align: center;
+    }
+    .timer-display {
+      font-size: 54px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      letter-spacing: 2px;
+      margin: 8px 0 16px;
+    }
+    .timer-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .timer-btn {
+      padding: 9px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .timer-btn:hover { border-color: var(--border-bright); background: var(--surface-hover); }
+    .timer-btn.go { background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.3); color: var(--green); }
+    .timer-btn.pause { background: rgba(251,191,36,0.15); border-color: rgba(251,191,36,0.3); color: var(--amber); }
+    .timer-btn.reset { background: rgba(255,255,255,0.05); color: var(--text-secondary); }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      top: 20px; left: 50%;
+      transform: translateX(-50%) translateY(-80px);
+      background: var(--surface-2);
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 99;
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast .xp-gain { color: var(--green); }
+
+    /* ===== LEVEL UP OVERLAY ===== */
+    .levelup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    .levelup.show { opacity: 1; pointer-events: auto; }
+    .levelup-box {
+      text-align: center;
+      padding: 40px 50px;
+      background: var(--surface-2);
+      border: 1px solid var(--border-bright);
+      border-radius: 20px;
+    }
+    .levelup-emoji { font-size: 64px; margin-bottom: 12px; }
+    .levelup-text { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .levelup-rank { font-size: 16px; color: var(--amber); }
+
+    @media (max-width: 600px) {
+      .rank-card { flex-direction: column; text-align: center; }
+      .rank-badge { margin: 0 auto; }
+      .timer-display { font-size: 42px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>刷题游戏面板</h1>
+  <p class="subtitle">每做一道题都有反馈 · 段位 · 连击 · 成就 · 番茄钟</p>
+</div>
+
+<div class="wrap">
+
+  <!-- RANK -->
+  <div class="rank-card">
+    <div class="rank-badge" id="rankBadge">🥉</div>
+    <div class="rank-info">
+      <div class="rank-name" id="rankName">青铜</div>
+      <div class="rank-xp" id="rankXp">0 XP</div>
+      <div class="xp-bar-wrap"><div class="xp-bar" id="xpBar" style="width:0%;background:linear-gradient(90deg,#cd7f32,#fbbf24)"></div></div>
+      <div class="rank-next" id="rankNext">距离下一段位还需 100 XP</div>
+      <div class="rank-flavor" id="rankFlavor">开始你的刷题之旅</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="streak-row">
+    <div class="stat-box">
+      <div class="stat-num fire" id="statStreak">0</div>
+      <div class="stat-label">🔥 连续打卡天数</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num done" id="statProblems">0</div>
+      <div class="stat-label">💪 累计做题</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num book" id="statConcepts">0</div>
+      <div class="stat-label">📚 累计学概念</div>
+    </div>
+  </div>
+
+  <!-- HEATMAP -->
+  <div class="heatmap-card">
+    <div class="heatmap-title">最近 30 天打卡记录（绿格子连成片，就不想断了）</div>
+    <div class="heatmap" id="heatmap"></div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button class="action-btn primary" id="btnCheckin" onclick="checkin()">
+      <span class="ab-icon">✅</span>
+      今日打卡
+      <span class="ab-xp">+10 XP</span>
+    </button>
+    <button class="action-btn" onclick="addProblem()">
+      <span class="ab-icon">💪</span>
+      做了一题
+      <span class="ab-xp">+20 XP</span>
+    </button>
+    <button class="action-btn" onclick="addConcept()">
+      <span class="ab-icon">📚</span>
+      学了一个概念
+      <span class="ab-xp">+50 XP</span>
+    </button>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="section">
+    <div class="section-title">🏆 成就徽章 <span class="badge" id="achCount"></span></div>
+    <div class="ach-grid" id="achGrid"></div>
+  </div>
+
+  <!-- CHALLENGE -->
+  <div class="section">
+    <div class="section-title">⚔️ 今日挑战 <span class="badge">每天一道 · 保持手感</span></div>
+    <div class="challenge-card">
+      <div class="challenge-tag" id="challengeTag">Easy</div>
+      <div class="challenge-info">
+        <div class="challenge-name" id="challengeName">加载中...</div>
+        <div class="challenge-meta" id="challengeMeta"></div>
+      </div>
+      <div style="font-size:40px">⚔️</div>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div class="section">
+    <div class="section-title">⏱️ 番茄钟 <span class="badge">25 分钟专注做一道题</span></div>
+    <div class="timer-card">
+      <div class="timer-display" id="timerDisplay">25:00</div>
+      <div class="timer-btns">
+        <button class="timer-btn go" id="timerStart" onclick="timerToggle()">开始</button>
+        <button class="timer-btn reset" onclick="timerReset()">重置</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="levelup" id="levelup">
+  <div class="levelup-box">
+    <div class="levelup-emoji" id="levelupEmoji">🥈</div>
+    <div class="levelup-text">恭喜升级！</div>
+    <div class="levelup-rank" id="levelupRank">白银</div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const GAME_KEY = 'dsa_game_panel_v1';
+
+const RANKS = [
+  { name: '青铜', emoji: '🥉', min: 0,    color: '#cd7f32', flavor: '开始你的刷题之旅' },
+  { name: '白银', emoji: '🥈', min: 100,  color: '#c0c0c0', flavor: '已经入门，继续推进' },
+  { name: '黄金', emoji: '🥇', min: 300,  color: '#ffd700', flavor: '有点东西了' },
+  { name: '铂金', emoji: '💎', min: 600,  color: '#06b6d4', flavor: '超越大多数人' },
+  { name: '钻石', emoji: '🔷', min: 1000, color: '#b9f2ff', flavor: '面试可一战' },
+  { name: '大师', emoji: '🌟', min: 1500, color: '#f97316', flavor: '原理已吃透' },
+  { name: '王者', emoji: '👑', min: 2000, color: '#8b5cf6', flavor: '算法大成' },
+];
+
+const ACHIEVEMENTS = [
+  { id: 'first_checkin', icon: '🚀', name: '启程', desc: '首次打卡' },
+  { id: 'streak_3', icon: '🔥', name: '三日连击', desc: '连续打卡 3 天' },
+  { id: 'streak_7', icon: '⚡', name: '七日连击', desc: '连续打卡 7 天' },
+  { id: 'streak_30', icon: '🌋', name: '三十日连击', desc: '连续打卡 30 天' },
+  { id: 'problems_5', icon: '💪', name: '初尝胜果', desc: '做 5 道题' },
+  { id: 'problems_20', icon: '🗡️', name: '题海新人', desc: '做 20 道题' },
+  { id: 'problems_50', icon: '⚔️', name: '题海老手', desc: '做 50 道题' },
+  { id: 'problems_100', icon: '🏹', name: '题海之王', desc: '做 100 道题' },
+  { id: 'concepts_5', icon: '📚', name: '学有所成', desc: '学 5 个概念' },
+  { id: 'concepts_15', icon: '🎓', name: '登峰造极', desc: '学 15 个概念' },
+  { id: 'xp_2000', icon: '👑', name: '王者降临', desc: '达到 2000 XP' },
+];
+
+const CHALLENGES = [
+  { c: '数组', name: '#26 删除有序数组中的重复项', diff: 'Easy', file: 'practice/01-array/01-remove-duplicates.js' },
+  { c: '数组', name: '#88 合并两个有序数组', diff: 'Easy', file: 'practice/01-array/02-merge-sorted-array.js' },
+  { c: '数组', name: '#283 移动零', diff: 'Easy', file: 'practice/01-array/03-move-zeroes.js' },
+  { c: '链表', name: '#206 反转链表', diff: 'Easy', file: 'practice/02-linked-list/01-reverse-linked-list.js' },
+  { c: '链表', name: '#21 合并两个有序链表', diff: 'Easy', file: 'practice/02-linked-list/02-merge-two-sorted-lists.js' },
+  { c: '链表', name: '#141 环形链表', diff: 'Easy', file: 'practice/02-linked-list/03-linked-list-cycle.js' },
+];
+
+// ===== STORAGE =====
+function load() {
+  try {
+    const raw = localStorage.getItem(GAME_KEY);
+    return raw ? JSON.parse(raw) : { checkins: [], problems: 0, concepts: 0 };
+  } catch(e) { return { checkins: [], problems: 0, concepts: 0 }; }
+}
+function save(data) {
+  localStorage.setItem(GAME_KEY, JSON.stringify(data));
+}
+
+function fmt(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function todayStr() { return fmt(new Date()); }
+
+function calcXP(data) {
+  return data.checkins.length * 10 + data.problems * 20 + data.concepts * 50;
+}
+function calcStreak(checkins) {
+  const set = new Set(checkins);
+  let streak = 0;
+  let d = new Date();
+  if (!set.has(fmt(d))) d.setDate(d.getDate() - 1);
+  while (set.has(fmt(d))) {
+    streak++;
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
+}
+function getRank(xp) {
+  let cur = RANKS[0];
+  for (const r of RANKS) {
+    if (xp >= r.min) cur = r;
+  }
+  const next = RANKS[RANKS.indexOf(cur) + 1] || null;
+  return { cur, next };
+}
+function isUnlocked(ach, data, xp, streak) {
+  const c = data;
+  switch(ach.id) {
+    case 'first_checkin': return c.checkins.length >= 1;
+    case 'streak_3': return streak >= 3;
+    case 'streak_7': return streak >= 7;
+    case 'streak_30': return streak >= 30;
+    case 'problems_5': return c.problems >= 5;
+    case 'problems_20': return c.problems >= 20;
+    case 'problems_50': return c.problems >= 50;
+    case 'problems_100': return c.problems >= 100;
+    case 'concepts_5': return c.concepts >= 5;
+    case 'concepts_15': return c.concepts >= 15;
+    case 'xp_2000': return xp >= 2000;
+    default: return false;
+  }
+}
+
+// ===== RENDER =====
+function render() {
+  const data = load();
+  const xp = calcXP(data);
+  const streak = calcStreak(data.checkins);
+  const { cur, next } = getRank(xp);
+
+  // rank badge
+  document.getElementById('rankBadge').textContent = cur.emoji;
+  document.getElementById('rankBadge').style.borderColor = cur.color;
+  document.getElementById('rankName').textContent = cur.name;
+  document.getElementById('rankName').style.color = cur.color;
+  document.getElementById('rankXp').textContent = `${xp} XP`;
+  document.getElementById('rankFlavor').textContent = cur.flavor;
+
+  // xp bar
+  let pct = 100, nextText = '已到最高段位 👑';
+  if (next) {
+    const range = next.min - cur.min;
+    const progress = xp - cur.min;
+    pct = Math.min(100, (progress / range) * 100);
+    nextText = `距离「${next.name} ${next.emoji}」还需 ${next.min - xp} XP`;
+  }
+  document.getElementById('xpBar').style.width = pct + '%';
+  document.getElementById('xpBar').style.background = `linear-gradient(90deg, ${cur.color}, ${next ? next.color : cur.color})`;
+  document.getElementById('rankNext').textContent = nextText;
+
+  // stats
+  document.getElementById('statStreak').textContent = streak;
+  document.getElementById('statProblems').textContent = data.problems;
+  document.getElementById('statConcepts').textContent = data.concepts;
+
+  // heatmap
+  renderHeatmap(data.checkins);
+
+  // checkin button state
+  const checkedToday = data.checkins.includes(todayStr());
+  const btn = document.getElementById('btnCheckin');
+  btn.disabled = checkedToday;
+  btn.innerHTML = checkedToday ? '<span class="ab-icon">✅</span>今日已打卡<span class="ab-xp">明天再来</span>' : '<span class="ab-icon">✅</span>今日打卡<span class="ab-xp">+10 XP</span>';
+
+  // achievements
+  let unlocked = 0;
+  document.getElementById('achGrid').innerHTML = ACHIEVEMENTS.map(a => {
+    const u = isUnlocked(a, data, xp, streak);
+    if (u) unlocked++;
+    return `<div class="ach-card ${u ? 'unlocked' : 'locked'}">
+      <div class="ach-icon">${u ? a.icon : '🔒'}</div>
+      <div class="ach-name">${a.name}</div>
+      <div class="ach-desc">${a.desc}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('achCount').textContent = `${unlocked}/${ACHIEVEMENTS.length}`;
+
+  // challenge
+  const today = new Date();
+  const idx = Math.floor(today.getTime() / (1000*60*60*24)) % CHALLENGES.length;
+  const ch = CHALLENGES[idx];
+  document.getElementById('challengeTag').textContent = ch.diff;
+  document.getElementById('challengeName').textContent = ch.name;
+  document.getElementById('challengeMeta').textContent = `概念：${ch.c} · 文件：${ch.file}`;
+}
+
+function renderHeatmap(checkins) {
+  const set = new Set(checkins);
+  const container = document.getElementById('heatmap');
+  container.innerHTML = '';
+  const today = new Date();
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const ds = fmt(d);
+    const cell = document.createElement('div');
+    cell.className = 'day-cell' + (set.has(ds) ? ' on' : '') + (i === 0 ? ' today' : '');
+    cell.title = ds;
+    container.appendChild(cell);
+  }
+}
+
+// ===== TOAST =====
+let toastTimer = null;
+function showToast(msg, xpGain) {
+  const t = document.getElementById('toast');
+  t.innerHTML = xpGain ? `${msg} <span class="xp-gain">+${xpGain} XP</span>` : msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ===== LEVEL UP =====
+function checkLevelUp(oldXp, newXp) {
+  const oldRank = getRank(oldXp).cur;
+  const newRank = getRank(newXp).cur;
+  if (newRank.min > oldRank.min) {
+    document.getElementById('levelupEmoji').textContent = newRank.emoji;
+    document.getElementById('levelupRank').textContent = newRank.name;
+    document.getElementById('levelupRank').style.color = newRank.color;
+    const lv = document.getElementById('levelup');
+    lv.classList.add('show');
+    setTimeout(() => lv.classList.remove('show'), 2500);
+  }
+}
+
+// ===== ACTIONS =====
+function checkin() {
+  const data = load();
+  const t = todayStr();
+  if (data.checkins.includes(t)) return;
+  data.checkins.push(t);
+  save(data);
+  render();
+  showToast('打卡成功！', 10);
+  checkLevelUp(calcXP(data) - 10, calcXP(data));
+}
+
+function addProblem() {
+  const data = load();
+  const oldXp = calcXP(data);
+  data.problems += 1;
+  save(data);
+  const newXp = calcXP(data);
+  render();
+  showToast('做了一道题，干得漂亮！', 20);
+  checkLevelUp(oldXp, newXp);
+}
+
+function addConcept() {
+  const data = load();
+  const oldXp = calcXP(data);
+  data.concepts += 1;
+  save(data);
+  const newXp = calcXP(data);
+  render();
+  showToast('学了一个概念！', 50);
+  checkLevelUp(oldXp, newXp);
+}
+
+// ===== TIMER =====
+const POMODORO = 25 * 60;
+let timerRemain = POMODORO;
+let timerRunning = false;
+let timerInterval = null;
+
+function formatTime(s) {
+  const m = String(Math.floor(s / 60)).padStart(2,'0');
+  const sec = String(s % 60).padStart(2,'0');
+  return `${m}:${sec}`;
+}
+function renderTimer() {
+  document.getElementById('timerDisplay').textContent = formatTime(timerRemain);
+  document.getElementById('timerStart').textContent = timerRunning ? '暂停' : (timerRemain < POMODORO ? '继续' : '开始');
+  document.getElementById('timerStart').className = 'timer-btn ' + (timerRunning ? 'pause' : 'go');
+}
+function timerToggle() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    renderTimer();
+    return;
+  }
+  if (timerRemain <= 0) timerRemain = POMODORO;
+  timerRunning = true;
+  timerInterval = setInterval(() => {
+    timerRemain--;
+    renderTimer();
+    if (timerRemain <= 0) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      renderTimer();
+      showToast('🍅 专注时间到！休息 5 分钟，回来继续');
+      timerRemain = POMODORO;
+      renderTimer();
+    }
+  }, 1000);
+  renderTimer();
+}
+function timerReset() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerRemain = POMODORO;
+  renderTimer();
+}
+
+// init
+render();
+renderTimer();
+</script>
+
+</body>
+</html>
